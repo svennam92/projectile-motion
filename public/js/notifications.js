@@ -64,6 +64,7 @@
   }
 
   Notifications.prototype.makeNotification = function(score, currentScore, newGame) {
+    currentScore = currentScore || 0;
     var eventTemplate = "<li class=\"event jquery-hidden alert ";
     if (score == 0) {
       eventTemplate += "alert-info";
