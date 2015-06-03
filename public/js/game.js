@@ -100,7 +100,6 @@
   };
 
   Game.prototype.afterProjectiles = function(ctx) {
-    this.notifications.add(this.score, this.currentScore)
     if (self.hit) {
       self.target.hit(ctx);
       $('.hit-text').removeClass('hidden');
@@ -109,6 +108,7 @@
     }
 
     $('.score').text(self.currentScore);
+    this.notifications.add(this.score, this.currentScore)
 
     self.shot = true;
     self.shooting = false;
