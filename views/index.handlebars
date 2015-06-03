@@ -52,7 +52,11 @@
       </span>
 
       <div class="text-right score value-display h2">
-        {{data.score}}
+        {{#if data.score}}
+          {{data.score}}
+        {{else}}
+          0
+        {{/if}}
       </div>
     </div>
 

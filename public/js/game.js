@@ -3,7 +3,7 @@
   var ProjectileMotion = root.ProjectileMotion = (root.ProjectileMotion || {});
   var self;
 
-  var Game = ProjectileMotion.Game = function(ctx, auth, flows, sizeX, sizeY, guess, target_distance) {
+  var Game = ProjectileMotion.Game = function(ctx, auth, flows, sizeX, sizeY, guess, target_distance, score) {
     self = this;
     this.ctx = ctx;
     this.auth = auth;
@@ -17,7 +17,7 @@
     this.dimY = sizeY;
     this.shooting = false;
     this.projectileArray = [];
-    this.currentScore;
+    this.currentScore = score;
     this.score;
 
     this.notifications = new ProjectileMotion.Notifications();

@@ -7,6 +7,11 @@
   var auth = {{{jsonStringify data.auth}}};
   var flows = {{{jsonStringify data.flows}}};
   var state = {{{jsonStringify data.state}}};
+  {{#if data.score}}
+    var score = {{{jsonStringify data.score}}};
+  {{else}}
+    var score = 0;
+  {{/if}}
 
   var width = $('.canvas').attr('width');
   var height = $('.canvas').attr('height');
