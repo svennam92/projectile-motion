@@ -1,0 +1,413 @@
+{
+    "flows": [
+        {
+            "id": "f5568c59e68056d1bbd64ddfe",
+            "capacity": 1000,
+            "description": "Shot fired!",
+            "path": "/iot-shoot/shot-fired"
+        },
+        {
+            "id": "f556cfbde68056d40e7909011",
+            "capacity": 1000,
+            "path": "/iot-shoot/current-score"
+        },
+        {
+            "id": "f556d1b7b68056d40e7909b9b",
+            "capacity": 1000,
+            "description": "How'd we do?",
+            "path": "/iot-shoot/result"
+        },
+        {
+            "id": "f5568cb3c5bb709355caee40c",
+            "capacity": 1,
+            "description": "state of all parameters",
+            "path": "/iot-shoot/current-state"
+        },
+        {
+            "id": "f556b2ce15bb7092bdca7845e",
+            "capacity": 1000,
+            "path": "/iot-shoot/current-guess"
+        }
+    ],
+    "tracks": [
+        {
+            "id": "t5568ce5368056d1bbd64e329",
+            "disabled": false,
+            "js": "function(__input) {\n  function node_source_0(config) {\n    var drop = __input;\n    node_query_1(config, drop);\n  }\n  function node_query_1(config, drop) {\n    var __id = \"f5568c4305bb709355caededb\";\n    var __opts = {filter: \"EXISTS fhash\", limit: 6, order: \"desc\"};\n    var found_parameters = Flow.Drop.find(__id, __opts);\n    node_arbitrary_2(config, drop, found_parameters);\n  }\n  function node_arbitrary_2(config, drop, found_parameters) {\n    var group = function() {\n      //sensible defaults\n      var elems = {\n          \"gravity\": { \"type\": \"double\", \"value\": 1.0 },\n          \"power\": { \"type\": \"double\", \"value\": 50 },\n          \"angle\": { \"type\": \"double\", \"value\": 45 },\n          \"fire\": { \"type\": \"boolean\", \"value\":false },\n        \t\"target_distance\":{ \"type\":\"double\",\"value\":500.0}\n      };\n       \n      \n      for (var i in found_parameters) {\n          var p = found_parameters[i];  \n          if (p.fhash == \"gravity\") {\n              elems.gravity.value = p.elems.gravity.value; \n          } else if (p.fhash == \"power\") {\n              elems.power.value = p.elems.power_value.value;\n          } else if (p.fhash == \"angle\") {\n              elems.angle = p.elems.angle;\n          } else if (p.fhash == \"target_distance\") {\n              elems.target_distance = p.elems.target_distance;\n          }\n      }\n       \n      // send fire== true iff the input drop was a shot\n      if (drop.fhash == \"fire\"){\n        elems.fire.value = true; \n      }\n      return {\"elems\":elems}\n    }();\n    node_dest_3(config, drop, found_parameters, group);\n  }\n  function node_dest_3(config, drop, found_parameters, group) {\n    var __p = \"/iot-shoot/current-state\";\n    if (!__drops.hasOwnProperty(__p)) {\n      __drops[__p] = [group];\n    } else {\n      __drops[__p].push(group);\n    }\n  }\n  var config = {\n    \"PARAMS_FLOW_ID\":\"f5568c4305bb709355caededb\"\n  };\n  var __drops = {};\n  node_source_0(config);\n\n  return __drops;\n}",
+            "metadata": {
+                "nodes": [
+                    {
+                        "outputs": [
+                            "9d761f5b-eb39-421f-a9f2-6e10627a4726"
+                        ],
+                        "id": "551a077f-8eab-49b7-a5ac-b7fbb5b39b40",
+                        "type": "source",
+                        "value": {
+                            "path": "/iot-shoot/parameters",
+                            "var": "drop"
+                        },
+                        "coords": {
+                            "x": 800,
+                            "y": 800
+                        }
+                    },
+                    {
+                        "outputs": [],
+                        "displayName": "State Output",
+                        "id": "7ef4c3f0-6e6f-42e9-9e70-283f56f0ae84",
+                        "type": "dest",
+                        "value": {
+                            "path": "/iot-shoot/current-state",
+                            "source": "group"
+                        },
+                        "coords": {
+                            "x": 1361,
+                            "y": 800
+                        }
+                    },
+                    {
+                        "outputs": [
+                            "da05b71f-6d51-4e9d-85ed-e89d68ca8395"
+                        ],
+                        "displayName": "Get Params",
+                        "id": "9d761f5b-eb39-421f-a9f2-6e10627a4726",
+                        "type": "query",
+                        "value": {
+                            "filter": "EXISTS fhash",
+                            "method": "find",
+                            "dropId": "",
+                            "var": "found_parameters",
+                            "service": "drop",
+                            "limit": 6,
+                            "id": "f5568c4305bb709355caededb",
+                            "sort": "",
+                            "order": "desc"
+                        },
+                        "coords": {
+                            "x": 989,
+                            "y": 796
+                        }
+                    },
+                    {
+                        "outputs": [],
+                        "displayName": "Script Constants",
+                        "id": "7d416922-8eb6-43ef-a1f2-b89a71379619",
+                        "type": "config",
+                        "value": {
+                            "var": "config",
+                            "value": "{\n  \"PARAMS_FLOW_ID\":\"f5568c4305bb709355caededb\"\n}"
+                        },
+                        "coords": {
+                            "x": 822,
+                            "y": 1021
+                        }
+                    },
+                    {
+                        "outputs": [
+                            "7ef4c3f0-6e6f-42e9-9e70-283f56f0ae84"
+                        ],
+                        "displayName": "Group Parameters",
+                        "id": "da05b71f-6d51-4e9d-85ed-e89d68ca8395",
+                        "type": "arbitrary",
+                        "value": {
+                            "var": "group",
+                            "js": "//sensible defaults\nvar elems = {\n    \"gravity\": { \"type\": \"double\", \"value\": 1.0 },\n    \"power\": { \"type\": \"double\", \"value\": 50 },\n    \"angle\": { \"type\": \"double\", \"value\": 45 },\n    \"fire\": { \"type\": \"boolean\", \"value\":false },\n  \t\"target_distance\":{ \"type\":\"double\",\"value\":500.0}\n};\n \n\nfor (var i in found_parameters) {\n    var p = found_parameters[i];  \n    if (p.fhash == \"gravity\") {\n        elems.gravity.value = p.elems.gravity.value; \n    } else if (p.fhash == \"power\") {\n        elems.power.value = p.elems.power_value.value;\n    } else if (p.fhash == \"angle\") {\n        elems.angle = p.elems.angle;\n    } else if (p.fhash == \"target_distance\") {\n        elems.target_distance = p.elems.target_distance;\n    }\n}\n \n// send fire== true iff the input drop was a shot\nif (drop.fhash == \"fire\"){\n  elems.fire.value = true; \n}\nreturn {\"elems\":elems}"
+                        },
+                        "coords": {
+                            "x": 1185,
+                            "y": 810
+                        }
+                    }
+                ],
+                "version": 2
+            },
+            "source": "/iot-shoot/parameters"
+        },
+        {
+            "id": "t556b31fa68056d2f14d2d1b0",
+            "description": "Output based on last seen state",
+            "disabled": false,
+            "js": "function(__input) {\n  function node_source_0() {\n    var input = __input;\n    node_arbitrary_1(input);\n  }\n  function node_arbitrary_1(input) {\n    var calculated = function() {\n      function trajectory(angle, velocity, gravity, num_points) {\n          // algorithm requires radians\n          var radians = angle * Math.PI / 180;\n          num_points = num_points || 20;\n          // input gravity 1.0 == \"normal\", e.g. 9.81 m/s\n          gravity = gravity * 9.81;\n      \n          function sqr(x) {\n              return x * x;\n          }\n      \n          function total_distance() {\n              return Math.abs(max_possible_distance() * Math.sin(2 * radians));\n          }\n      \n          function max_possible_distance() {\n              return sqr(velocity) / gravity;\n          }\n      \n          function time_at_distance(d) {\n              return d / (velocity * Math.cos(radians));\n          }\n      \n          function heightAt(x) {\n              return (x * Math.tan(radians)) - (gravity * sqr(x)) / (2 * sqr(velocity * Math.cos(radians)));\n          }\n      \n          var pts = [];\n          var d = total_distance();\n          var num_generated_pts = num_points - 1;\n          for (var i = 0; i < num_generated_pts; i++) {\n            \n              var x_pos = (d / num_generated_pts) * i;\n            console.log(i+\" \"+d+\" \"+num_generated_pts+\" \"+x_pos);\n              var y_pos = heightAt(x_pos);\n              pts[i] = [x_pos, y_pos];\n          }\n          pts.push([d, 0]);\n          return pts;\n      }\n      \n      var e = input.elems;\n      // if this is not an actual shot, just calculate a few points and write to the \"guesses\" flow\n      // otherwise write to the output flow\n      \n      var num_points = e.fire.value ? 20 : 5; \n      var pts = trajectory(e.angle.value, e.power.value, e.gravity.value, num_points);\n      var distance = pts[pts.length - 1][0];\n      e.points = pts; \n      console.log(distance+\" ===>\"+ e.target_distance.value);\n      var distance_pct = 100 * distance / e.target_distance.value;\n      e.distance_in_pct = {\n          \"type\": \"double\",\n          \"value\": distance_pct\n      };\n      \n      return {\"elems\": e};\n    }();\n    node_switch_2(input, calculated);\n  }\n  function node_switch_2(input, calculated) {\n    if (calculated.elems.fire.value == true) {\n      node_dest_4(input, calculated);\n    }\n    else {\n      node_dest_3(input, calculated);\n    }\n  }\n  function node_dest_4(input, calculated) {\n    var __p = \"/iot-shoot/shot-fired\";\n    if (!__drops.hasOwnProperty(__p)) {\n      __drops[__p] = [calculated];\n    } else {\n      __drops[__p].push(calculated);\n    }\n  }\n  function node_dest_3(input, calculated) {\n    var __p = \"/iot-shoot/current-guess\";\n    if (!__drops.hasOwnProperty(__p)) {\n      __drops[__p] = [calculated];\n    } else {\n      __drops[__p].push(calculated);\n    }\n  }\n  var __drops = {};\n  node_source_0();\n\n  return __drops;\n}",
+            "metadata": {
+                "testData": "{\n  \"elems\": {\n    \"target_distance\": {\n      \"type\": \"integer\",\n      \"value\": 500\n    },\n    \"gravity\": {\n      \"type\": \"float\",\n      \"value\": 1\n    },\n    \"angle\": {\n      \"type\": \"integer\",\n      \"value\": 45\n    },\n    \"fire\": {\n      \"type\": \"boolean\",\n      \"value\": true\n    },\n    \"power\": {\n      \"type\": \"float\",\n      \"value\": 110\n    }\n  },\n  \"path\": \"/iot-shoot/current-state\"\n}",
+                "nodes": [
+                    {
+                        "outputs": [
+                            "4d1d98d6-9180-4131-9bfb-0c98eba1c45f"
+                        ],
+                        "displayName": "input",
+                        "id": "ccc16867-e0d0-45a6-ba76-f66c18aac7cc",
+                        "type": "source",
+                        "value": {
+                            "path": "/iot-shoot/current-state",
+                            "var": "input"
+                        },
+                        "coords": {
+                            "x": 800,
+                            "y": 799
+                        }
+                    },
+                    {
+                        "outputs": [
+                            "ddccfed6-7cad-454f-bcd8-5d19e83167c0"
+                        ],
+                        "displayName": "Calculate Trajectory",
+                        "id": "4d1d98d6-9180-4131-9bfb-0c98eba1c45f",
+                        "type": "arbitrary",
+                        "value": {
+                            "var": "calculated",
+                            "js": "function trajectory(angle, velocity, gravity, num_points) {\n    // algorithm requires radians\n    var radians = angle * Math.PI / 180;\n    num_points = num_points || 20;\n    // input gravity 1.0 == \"normal\", e.g. 9.81 m/s\n    gravity = gravity * 9.81;\n\n    function sqr(x) {\n        return x * x;\n    }\n\n    function total_distance() {\n        return Math.abs(max_possible_distance() * Math.sin(2 * radians));\n    }\n\n    function max_possible_distance() {\n        return sqr(velocity) / gravity;\n    }\n\n    function time_at_distance(d) {\n        return d / (velocity * Math.cos(radians));\n    }\n\n    function heightAt(x) {\n        return (x * Math.tan(radians)) - (gravity * sqr(x)) / (2 * sqr(velocity * Math.cos(radians)));\n    }\n\n    var pts = [];\n    var d = total_distance();\n    var num_generated_pts = num_points - 1;\n    for (var i = 0; i < num_generated_pts; i++) {\n      \n        var x_pos = (d / num_generated_pts) * i;\n      console.log(i+\" \"+d+\" \"+num_generated_pts+\" \"+x_pos);\n        var y_pos = heightAt(x_pos);\n        pts[i] = [x_pos, y_pos];\n    }\n    pts.push([d, 0]);\n    return pts;\n}\n\nvar e = input.elems;\n// if this is not an actual shot, just calculate a few points and write to the \"guesses\" flow\n// otherwise write to the output flow\n\nvar num_points = e.fire.value ? 20 : 5; \nvar pts = trajectory(e.angle.value, e.power.value, e.gravity.value, num_points);\nvar distance = pts[pts.length - 1][0];\ne.points = pts; \nconsole.log(distance+\" ===>\"+ e.target_distance.value);\nvar distance_pct = 100 * distance / e.target_distance.value;\ne.distance_in_pct = {\n    \"type\": \"double\",\n    \"value\": distance_pct\n};\n\nreturn {\"elems\": e};"
+                        },
+                        "coords": {
+                            "x": 1001,
+                            "y": 803
+                        }
+                    },
+                    {
+                        "outputs": [
+                            "2706db63-0556-4f75-b046-463a6902d7ff",
+                            "badbd263-39bc-4e89-ac91-d812037325e6"
+                        ],
+                        "displayName": "If is shot",
+                        "id": "ddccfed6-7cad-454f-bcd8-5d19e83167c0",
+                        "type": "switch",
+                        "value": {
+                            "conditions": [
+                                {
+                                    "value": "calculated.elems.fire.value == true"
+                                }
+                            ]
+                        },
+                        "coords": {
+                            "x": 1194,
+                            "y": 805
+                        }
+                    },
+                    {
+                        "outputs": [],
+                        "displayName": "shot fired",
+                        "id": "2706db63-0556-4f75-b046-463a6902d7ff",
+                        "type": "dest",
+                        "value": {
+                            "path": "/iot-shoot/shot-fired",
+                            "source": "calculated"
+                        },
+                        "coords": {
+                            "x": 1428,
+                            "y": 782
+                        }
+                    },
+                    {
+                        "outputs": [],
+                        "displayName": "Save a guess",
+                        "id": "badbd263-39bc-4e89-ac91-d812037325e6",
+                        "type": "dest",
+                        "value": {
+                            "path": "/iot-shoot/current-guess",
+                            "source": "calculated"
+                        },
+                        "coords": {
+                            "x": 1411,
+                            "y": 868
+                        }
+                    }
+                ],
+                "version": 2
+            },
+            "source": "/iot-shoot/current-state"
+        },
+        {
+            "id": "t556b3d5f5bb7092bdca798f5",
+            "description": "Score Shot",
+            "js": "function(__input) {\n  function node_source_0() {\n    var drop = __input;\n    node_arbitrary_1(drop);\n  }\n  function node_arbitrary_1(drop) {\n    var scored = function() {\n      var diff = Math.abs(100 - drop.elems.distance_in_pct.value);\n      var score = 0; \n      if (diff < 5) { score = 20;}\n      else if (diff <15) { score = 10;}\n      else if (diff < 25) { score = 5;}\n      else if (diff > 90) { score = -1;}\n      else if (diff > 95) { score = -100;}\n      else { score = 0; }\n      \n      return {\"elems\":{\"score\":{\"type\":\"integer\",\"value\":score\t}}};\n    }();\n    node_switch_2(drop, scored);\n  }\n  function node_switch_2(drop, scored) {\n    if (scored.elems.score.value >= 0 || scored.elems.score.value == -1) {\n      node_dest_6(drop, scored, undefined);\n    }\n    else if (scored.elems.score.value == -100) {\n      node_http_3(drop, scored);\n    }\n  }\n  function node_dest_6(drop, scored, request) {\n    var __p = \"/iot-shoot/result\";\n    if (!__drops.hasOwnProperty(__p)) {\n      __drops[__p] = [scored];\n    } else {\n      __drops[__p].push(scored);\n    }\n  }\n  function node_http_3(drop, scored) {\n    var __url = \"http://quandyfactory.com/insult/json\";\n    var __headers = {  };\n    var request = Flow.Http.get(__url, __headers);\n    node_arbitrary_4(drop, scored, request)\n  }\n  function node_arbitrary_4(drop, scored, request) {\n    void function() {\n      scored.elems.insult = {\"type\":\"string\", \"value\":request.json.insult}\n    }();\n    node_dest_6(drop, scored, request);\n  }\n  var __drops = {};\n  node_source_0();\n\n  return __drops;\n}",
+            "metadata": {
+                "nodes": [
+                    {
+                        "outputs": [
+                            "37a4aabe-a6bf-4685-b3da-54a25de4419a"
+                        ],
+                        "displayName": "Shot fired",
+                        "id": "f29419f4-4b89-4a9a-8c44-eecd0fc27bd6",
+                        "type": "source",
+                        "value": {
+                            "path": "/iot-shoot/shot-fired",
+                            "var": "drop"
+                        },
+                        "coords": {
+                            "x": 782,
+                            "y": 782
+                        }
+                    },
+                    {
+                        "outputs": [],
+                        "displayName": "Shot Result",
+                        "id": "b5d8a80b-47cc-410f-8496-cf2afa900ae9",
+                        "type": "dest",
+                        "value": {
+                            "path": "/iot-shoot/result",
+                            "source": "scored"
+                        },
+                        "coords": {
+                            "x": 1641,
+                            "y": 783
+                        }
+                    },
+                    {
+                        "outputs": [
+                            "4d694430-5ed5-4d26-bda1-f56a5f296fd5"
+                        ],
+                        "displayName": "Calculate Score",
+                        "id": "37a4aabe-a6bf-4685-b3da-54a25de4419a",
+                        "type": "arbitrary",
+                        "value": {
+                            "var": "scored",
+                            "js": "var diff = Math.abs(100 - drop.elems.distance_in_pct.value);\nvar score = 0; \nif (diff < 5) { score = 20;}\nelse if (diff <15) { score = 10;}\nelse if (diff < 25) { score = 5;}\nelse if (diff > 90) { score = -1;}\nelse if (diff > 95) { score = -100;}\nelse { score = 0; }\n\nreturn {\"elems\":{\"score\":{\"type\":\"integer\",\"value\":score\t}}};"
+                        },
+                        "coords": {
+                            "x": 878,
+                            "y": 860
+                        }
+                    },
+                    {
+                        "outputs": [
+                            "d98fdbb5-1345-4ece-a989-71b2c4310557"
+                        ],
+                        "displayName": "Http Get insult",
+                        "id": "14a4c1d9-4daf-4b4f-b95e-ed3c19d0fba9",
+                        "type": "http",
+                        "value": {
+                            "headers": [],
+                            "method": "get",
+                            "var": "request",
+                            "body": "",
+                            "url": "http://quandyfactory.com/insult/json"
+                        },
+                        "coords": {
+                            "x": 1200,
+                            "y": 903
+                        }
+                    },
+                    {
+                        "outputs": [
+                            "b5d8a80b-47cc-410f-8496-cf2afa900ae9",
+                            "14a4c1d9-4daf-4b4f-b95e-ed3c19d0fba9",
+                            null
+                        ],
+                        "id": "4d694430-5ed5-4d26-bda1-f56a5f296fd5",
+                        "type": "switch",
+                        "value": {
+                            "conditions": [
+                                {
+                                    "value": "scored.elems.score.value >= 0 || scored.elems.score.value == -1"
+                                },
+                                {
+                                    "value": "scored.elems.score.value == -100"
+                                }
+                            ]
+                        },
+                        "coords": {
+                            "x": 1030,
+                            "y": 864
+                        }
+                    },
+                    {
+                        "outputs": [
+                            "b5d8a80b-47cc-410f-8496-cf2afa900ae9"
+                        ],
+                        "id": "d98fdbb5-1345-4ece-a989-71b2c4310557",
+                        "type": "arbitrary",
+                        "value": {
+                            "var": "",
+                            "js": "scored.elems.insult = {\"type\":\"string\", \"value\":request.json.insult}"
+                        },
+                        "coords": {
+                            "x": 1372,
+                            "y": 896
+                        }
+                    }
+                ],
+                "version": 2
+            },
+            "source": "/iot-shoot/shot-fired"
+        },
+        {
+            "id": "t556d1ce65bb7090bf7938a89",
+            "description": "Add new score to existing score",
+            "js": "function(__input) {\n  function node_source_0() {\n    var drop = __input;\n    node_query_1(drop);\n  }\n  function node_query_1(drop) {\n    var __id = \"f556cfbde68056d40e7909011\";\n    var __opts = {limit: 1, order: \"desc\"};\n    var query = Flow.Drop.find(__id, __opts);\n    node_arbitrary_2(drop, query);\n  }\n  function node_arbitrary_2(drop, query) {\n    var combined_score = function() {\n      var curr_value = 0;\n      if (query.length && query[0].elems && query[0].elems.score && query[0].elems.score.value) {\n        curr_value = query[0].elems.score.value;\n      }\n      \n      var new_value = drop.elems.score.value;\n      return {\"elems\":{\"score\":{\"type\":\"integer\",\"value\": curr_value + new_value }}};\n    }();\n    node_dest_3(drop, query, combined_score);\n  }\n  function node_dest_3(drop, query, combined_score) {\n    var __p = \"/iot-shoot/current-score\";\n    if (!__drops.hasOwnProperty(__p)) {\n      __drops[__p] = [combined_score];\n    } else {\n      __drops[__p].push(combined_score);\n    }\n  }\n  var __drops = {};\n  node_source_0();\n\n  return __drops;\n}",
+            "metadata": {
+                "nodes": [
+                    {
+                        "outputs": [
+                            "9947f293-30c7-420b-b1c5-dc8a1bfba27c"
+                        ],
+                        "id": "ed314e40-918b-485e-a834-8b32831e6e01",
+                        "type": "source",
+                        "value": {
+                            "path": "/iot-shoot/result",
+                            "var": "drop"
+                        },
+                        "coords": {
+                            "x": 800,
+                            "y": 800
+                        }
+                    },
+                    {
+                        "outputs": [],
+                        "displayName": "Added score",
+                        "id": "7e7f7cdd-f973-4d8e-b793-2f58bc4098db",
+                        "type": "dest",
+                        "value": {
+                            "path": "/iot-shoot/current-score",
+                            "source": "combined_score"
+                        },
+                        "coords": {
+                            "x": 1302,
+                            "y": 802
+                        }
+                    },
+                    {
+                        "outputs": [
+                            "7e7f7cdd-f973-4d8e-b793-2f58bc4098db"
+                        ],
+                        "displayName": "Add last Value",
+                        "id": "0fb25537-2c33-4826-9fc7-fc41500e8a43",
+                        "type": "arbitrary",
+                        "value": {
+                            "var": "combined_score",
+                            "js": "var curr_value = 0;\nif (query.length && query[0].elems && query[0].elems.score && query[0].elems.score.value) {\n  curr_value = query[0].elems.score.value;\n}\n\nvar new_value = drop.elems.score.value;\nreturn {\"elems\":{\"score\":{\"type\":\"integer\",\"value\": curr_value + new_value }}};"
+                        },
+                        "coords": {
+                            "x": 1127,
+                            "y": 802
+                        }
+                    },
+                    {
+                        "outputs": [
+                            "0fb25537-2c33-4826-9fc7-fc41500e8a43"
+                        ],
+                        "displayName": "Find Current Score",
+                        "id": "9947f293-30c7-420b-b1c5-dc8a1bfba27c",
+                        "type": "query",
+                        "value": {
+                            "filter": "",
+                            "method": "find",
+                            "dropId": "",
+                            "var": "query",
+                            "service": "drop",
+                            "limit": 1,
+                            "id": "f556cfbde68056d40e7909011",
+                            "sort": "",
+                            "order": "desc"
+                        },
+                        "coords": {
+                            "x": 965,
+                            "y": 800
+                        }
+                    }
+                ],
+                "version": 2
+            },
+            "source": "/iot-shoot/result"
+        }
+    ]
+}

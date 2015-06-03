@@ -1,0 +1,93 @@
+<div class="data row clearfix">
+
+  <div class="">
+
+    <div class="grid col-sm-offset-1 col-sm-1 input-wrapper">
+    <button type="button" class="new-game-btn btn btn-lg btn-primary">New Game</button>
+    </div>
+
+    <div class="grid col-sm-1 input-wrapper">
+      <span class="clearfix">
+        Target Distance
+      </span>
+
+      <div class="text-right target_distance value-display h2">
+        {{data.state.target_distance}}
+      </div>
+    </div>
+
+    <div class="grid col-sm-1 input-wrapper">
+      <span class="clearfix">
+        Angle
+      </span>
+
+      <div class="text-right angle value-display h2">
+        {{data.state.angle}}
+      </div>
+    </div>
+
+    <div class="grid col-sm-1 input-wrapper">
+      <span class="clearfix">
+        Power
+      </span>
+
+      <div class="text-right power value-display h2">
+        {{data.state.power}}
+      </div>
+    </div>
+
+    <div class="grid col-sm-1 input-wrapper">
+      <span class="clearfix">
+        Gravity
+      </span>
+
+      <div class="text-right gravity value-display h2">
+        {{data.state.gravity}}
+      </div>
+    </div>
+
+    <div class="grid col-sm-1 input-wrapper">
+      <span class="clearfix">
+        Score
+      </span>
+
+      <div class="text-right score value-display h2">
+        {{data.score}}
+      </div>
+    </div>
+
+    <div class="grid col-sm-3 input-wrapper hidden fire">
+
+      <span class="h2 fire-text">FIRE!
+        <span class="miss-text hidden"> MISS!</span>
+        <span class="hit-text hidden"> HIT!</span>
+      </span>
+      <button type="button" class="reset-btn btn btn-primary">Reset</button>
+    </div>
+
+
+  </div>
+
+
+</div>
+
+<div class="canvas-holder">
+  <canvas class="canvas" width="800" height="350"></canvas>
+</div>
+
+<div>
+  <div class="col-sm-offset-1 col-sm-3">
+  </div>
+  <div class="event-holder col-sm-offset-3 col-sm-3">
+    <h2>Events</h2>
+    <ul class="list-unstyled events">
+    </ul>
+  </div>
+</div>
+
+<div>
+
+</div>
+
+
+{{>scripts}}

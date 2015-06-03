@@ -1,0 +1,17 @@
+declared-services:
+  flowthings:
+    label: flowthings
+    plan: free
+applications:
+- host: projectile-motion
+  name: projectile-motion
+  disk_quota: 1024M
+  command: node app.js
+  path: .
+  domain: mybluemix.net
+  instances: 1
+  memory: 256M
+  services:
+    - flowthings
+  env:
+    environment: production

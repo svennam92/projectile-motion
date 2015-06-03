@@ -1,0 +1,7 @@
+{
+  "script": "app",
+  "ext": "js less",
+  "env": { "NODE_ENV": "development" } ,
+  "ignore": ["build/**", "public/**", "dist/**", "node_modules/**", "gulpfile.js"],
+  "nodeArgs": ["--debug"]
+}
