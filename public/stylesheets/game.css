@@ -3,15 +3,15 @@ input {
 }
 
 .fire {
-  color: red;
-}
-
-.fire .hit-text {
   color: yellow;
 }
 
-.fire .miss-text {
+.fire .hit-text {
   color: green;
+}
+
+.fire .miss-text {
+  color: red;
 }
 
 .fire .h2 {
