@@ -8,16 +8,16 @@
     this.id = 0;
     self = this;
     this.newGameCheck;
-  }
+  };
 
   Notifications.prototype.remove = function(id, cb) {
     $('#' + id).fadeOut('fast', function() {
-      $('#' + id).remove()
+      $('#' + id).remove();
       if (cb) {
-        cb()
-      }
-    })
-  }
+        cb();
+      };
+    });
+  };
 
   Notifications.prototype.removeAll = function() {
     for(var i=0; i<this.notifications.length; i++) {
@@ -32,35 +32,35 @@
       this.newGameCheck = true;
       this.newGame();
     }
-  }
+  };
 
   Notifications.prototype.newGame = function() {
     self.notifications = [];
-    self.add(0, 0, true, function() {
+    self.add(0, 0, true, null, function() {
       self.newGameCheck = false;
     });
-  }
+  };
 
-  Notifications.prototype.add = function(score, currentScore, newGame, cb) {
+  Notifications.prototype.add = function(score, currentScore, newGame, insult, cb) {
     var id = this.mkId();
-    this.notifications.push(id)
-    var notification = this.makeNotification(score, currentScore, newGame, cb);
+    this.notifications.push(id);
+    var notification = this.makeNotification(score, currentScore, newGame, insult, cb);
     $(".events").prepend(notification);
     if (this.notifications.length > 5) {
       var evtId = this.notifications.shift();
       this.remove(evtId, function() {
-        self.showNew(id, cb)
+        self.showNew(id, cb);
       });
     } else {
-      this.showNew(id, cb)
+      this.showNew(id, cb);
     }
-  }
+  };
 
   Notifications.prototype.showNew = function(id, cb) {
     $('#' + id).fadeIn('fast', cb);
-  }
+  };
 
-  Notifications.prototype.makeNotification = function(score, currentScore, newGame) {
+  Notifications.prototype.makeNotification = function(score, currentScore,  newGame, insult) {
     currentScore = currentScore || 0;
     var eventTemplate = "<li class=\"event jquery-hidden alert ";
     if (score == 0) {
@@ -74,18 +74,24 @@
     eventTemplate += "\" role=\"alert\"";
 
     eventTemplate += "id=\"" + this.id + "\">";
-    if (newGame) eventTemplate += "<strong>New Game<strong><br>"
+    if (newGame) eventTemplate += "<strong>New Game<strong><br>";
 
     eventTemplate += "Score: " + score + "";
-    eventTemplate += "<br>"
+    eventTemplate += "<br>";
     eventTemplate += "Total Score: " + currentScore;
+    if (insult) {
+      eventTemplate += "<br>";
+      eventTemplate += insult;
+    }
     eventTemplate += "</li>";
+
+
     return eventTemplate;
-  }
+  };
 
   Notifications.prototype.mkId = function() {
     this.id++;
     return this.id;
-  }
+  };
 
 })(this);

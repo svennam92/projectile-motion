@@ -18,7 +18,8 @@
     this.shooting = false;
     this.projectileArray = [];
     this.currentScore = score;
-    this.score;
+    this.score = 0;
+    this.insult = "";
 
     this.notifications = new ProjectileMotion.Notifications();
 
@@ -108,15 +109,16 @@
     }
 
     $('.score').text(self.currentScore);
-    this.notifications.add(this.score, this.currentScore)
+    this.notifications.add(this.score, this.currentScore, null, this.insult);
+    this.insult = "";
 
     self.shot = true;
     self.shooting = false;
-  }
+  };
 
   Game.prototype.showScore = function() {
     $('.score').text(self.currentScore);
-  }
+  };
 
 
   Game.prototype.msgCallback = function(drop) {
@@ -145,6 +147,9 @@
 
     if (drop.flowId === self.flows["result"]) {
       self.reportHit(drop.elems.score.value);
+      if (drop.elems.insult && drop.elems.insult.value) {
+        self.insult = drop.elems.insult.value;
+      }
       return;
     }
 
