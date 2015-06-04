@@ -1,4 +1,5 @@
 var flowthings = require('flowthings'),
+    Promise = require('bluebird')
     cache = require('memory-cache'),
     each = require('lodash.foreach'),
     config = JSON.parse(process.env.VCAP_SERVICES || "{}");

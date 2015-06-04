@@ -36,11 +36,8 @@
 
   Notifications.prototype.newGame = function() {
     self.notifications = [];
-    console.log(self.newGameCheck)
-    console.log(self.notifications)
     self.add(0, 0, true, function() {
       self.newGameCheck = false;
-      console.log(self.notifications)
     });
   }
 
