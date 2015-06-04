@@ -6,6 +6,7 @@
 
 ## To run this locally you'll need to run these commands:
 
+- add your flowthings account name and flowthings token to the .env file.
 - npm install
 - npm install -g gulp
 - gulp
