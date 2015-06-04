@@ -11,7 +11,7 @@ var express = require('express'),
     logger = require('morgan'),
     path = require('path');
 
-if (process.env != "production") {
+if (process.env.environment != "production") {
   require('dotenv').load();
 }
 
