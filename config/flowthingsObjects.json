@@ -261,7 +261,7 @@
                         "type": "arbitrary",
                         "value": {
                             "var": "scored",
-                            "js": "var diff = Math.abs(100 - drop.elems.distance_in_pct.value);\nvar score = 0; \nif (diff < 5) { score = 20;}\nelse if (diff <15) { score = 10;}\nelse if (diff < 25) { score = 5;}\nelse if (diff > 90) { score = -1;}\nelse if (diff > 95) { score = -100;}\nelse { score = 0; }\n\nreturn {\"elems\":{\"score\":{\"type\":\"integer\",\"value\":score\t}}};"
+                            "js": "var diff = Math.abs(100 - drop.elems.distance_in_pct.value);\nvar score = 0; \nif (diff < 5) { score = 20;}\nelse if (diff <15) { score = 10;}\nelse if (diff < 25) { score = 5;}\nelse if (diff > 90 && diff <= 95) { score = -1;}\nelse if (diff > 95) { score = -100;}\nelse { score = 0; }\n\nreturn {\"elems\":{\"score\":{\"type\":\"integer\",\"value\":score\t}}};"
                         },
                         "coords": {
                             "x": 878,
