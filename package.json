@@ -29,7 +29,7 @@
   },
   "repository": {},
   "engines": {
-    "node": "0.12.00"
+    "node": "0.12.0"
   },
   "devDependencies": {
     "gulp": "^3.9.0",
